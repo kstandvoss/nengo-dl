@@ -264,7 +264,7 @@ def test_constant_gpu():
         signals = SignalDict(tf.float32, 1)
         const = signals.constant(val, cutoff=0)
 
-        assert const.dtype == tf.int32
+        assert const.dtype.base_dtype == tf.int32
         assert "GPU" in const.device.upper()
 
     with tf.Session(graph=graph) as sess:
