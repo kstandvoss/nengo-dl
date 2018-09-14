@@ -540,19 +540,12 @@ class SignalDict(Mapping):
                 return ph
 
             with tf.variable_scope("constant_vars", reuse=False):
-                # tensorflow doesn't support int32 variables on the gpu, only
-                # int64 (for some reason). we don't want to use int64 since
-                # that would increase the size a lot, so we allow the variable
-                # to be created on the CPU if necessary, and then move it to
-                # the GPU with the identity
-                # TODO: double check if this is still true in 1.9.0
-                with tf.device(None):
-                    const_var = tf.get_variable(
-                        "constant_%d" % len(self.constant_phs),
-                        initializer=make_ph, shape=value.shape, dtype=dtype,
-                        collections=["constants"], trainable=False)
+                const_var = tf.get_variable(
+                    "constant_%d" % len(self.constant_phs),
+                    initializer=make_ph, shape=value.shape, dtype=dtype,
+                    collections=["constants"], trainable=False)
 
-                return tf.identity(const_var)
+                return const_var
         else:
             return tf.constant(value, dtype=dtype)
 
