@@ -426,6 +426,13 @@ def minibatch_generator(inputs, targets, minibatch_size, shuffle=True,
 
     n_inputs, n_steps = next(iter(inputs.values())).shape[:2]
 
+    if n_inputs % minibatch_size != 0:
+        warnings.warn(UserWarning(
+            "Number of inputs (%d) is not an even multiple of "
+            "minibatch size (%d); inputs will be truncated" %
+            (n_inputs, minibatch_size)))
+        n_inputs -= n_inputs % minibatch_size
+
     if rng is None:
         rng = np.random
 
@@ -436,13 +443,6 @@ def minibatch_generator(inputs, targets, minibatch_size, shuffle=True,
 
     if truncation is None:
         truncation = n_steps
-
-    if n_inputs % minibatch_size != 0:
-        warnings.warn(UserWarning(
-            "Number of inputs (%d) is not an even multiple of "
-            "minibatch size (%d); inputs will be truncated" %
-            (n_inputs, minibatch_size)))
-        perm = perm[:-(n_inputs % minibatch_size)]
 
     if n_steps % truncation != 0:
         warnings.warn(UserWarning(

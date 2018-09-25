@@ -25,6 +25,9 @@ Release History
 
 - Test Simulator parameters are now controlled through pytest arguments,
   rather than environment variables.
+- If training data is truncated (due to uneven minibatch size), it will now
+  always be the last items in the dataset that are dropped (rather than
+  a random selection).
 
 1.2.0 (September 5, 2018)
 -------------------------
