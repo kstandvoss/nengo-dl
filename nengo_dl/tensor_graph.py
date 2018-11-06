@@ -283,21 +283,8 @@ class TensorGraph(object):
         for p in self.model.probes:
             probe_sig = self.model.sig[p]["in"]
             if probe_sig in self.signals:
-                # TODO: better solution to avoid the forced_copy
-                # we need to make sure that probe reads occur before the
-                # probe value is overwritten on the next timestep. however,
-                # just blocking on the sliced value (probe_tensor) doesn't
-                # work, because slices of variables don't perform a
-                # copy, so the slice can be "executed" and then the value
-                # overwritten before the tensorarray write occurs. what we
-                # really want to do is block until the probe_arrays.write
-                # happens, but you can't block on probe_arrays (and blocking on
-                # probe_array.flow doesn't work, although I think it should).
-                # so by adding the copy here and then blocking on the copy, we
-                # make sure that the probe value is read before it can be
-                # overwritten.
-                probe_tensors.append(self.signals.gather(
-                    self.signals[probe_sig], force_copy=True))
+                probe_tensors.append(
+                    self.signals.gather(self.signals[probe_sig]))
             else:
                 # if a probe signal isn't in sig_map, that means that it isn't
                 # involved in any simulator ops.  so we know its value never
@@ -374,8 +361,8 @@ class TensorGraph(object):
                     # increment. we also need to make sure that all the probe
                     # reads happen before those values get overwritten on the
                     # next timestep
-                    with self.graph.control_dependencies(side_effects +
-                                                         probe_tensors):
+                    with self.graph.control_dependencies(
+                            side_effects + [p.flow for p in probe_arrays]):
                         loop_i += 1
 
             base_vars = tuple(self.signals.bases.values())

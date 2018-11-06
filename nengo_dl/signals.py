@@ -344,6 +344,8 @@ class SignalDict(Mapping):
             base array
         """
 
+        # TODO: remove force_copy?
+
         logger.debug("gather")
         logger.debug("src %s", src)
         logger.debug("indices %s", src.indices)
