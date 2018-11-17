@@ -37,6 +37,7 @@ jobs:
   - env: TEST_ARGS="--dtype float64 --simulator-only"
   - env: TEST_ARGS="--unroll_simulation 5 --simulator-only"
   - env: TEST_ARGS="--inference-only --simulator-only"
+  - env: PYTHON_VERSION="3.5"
   - env: MODE="examples"
     language: generic  # needed for xvfb
   - stage: deploy
