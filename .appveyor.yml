@@ -9,7 +9,6 @@ environment:
 
   matrix:
     - MODE: test # default build
-    # - MODE: examples  # TODO: some problem with nbval on windows (timeout)
     - NENGO_VERSION: git+https://github.com/nengo/nengo.git
       TF_VERSION: tensorflow --pre
     - NENGO_VERSION: nengo==2.7.0
@@ -24,12 +23,8 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - if %MODE% == examples (
-      conda install pandoc jupyter &
-      pip install -e .[tests,docs]
-    ) else (
-      pip install -e .[tests]
-    )
+  - pip install six>=1.11.0  # required by nbval, but conda installs 1.10
+  - pip install -e .[tests]
   - pip install %TF_VERSION%
   - pip install %NENGO_VERSION%
   - pip uninstall -y numpy
@@ -40,8 +35,4 @@ install:
 build: false  # Not a C# project
 
 test_script:
-  - if %MODE% == examples (
-      py.test -v --durations 20 --nbval-lax docs/examples
-    ) else (
-      py.test -n 2 --pyargs nengo && py.test -n 2 --durations 20 nengo_dl
-    )
+  - py.test -n 2 --pyargs nengo && py.test -n 2 --durations 20 nengo_dl
