@@ -23,7 +23,7 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - pip install six>=1.11.0  # required by nbval, but conda installs 1.10
+  - pip install "six>=1.11.0"
   - pip install -e .[tests]
   - pip install %TF_VERSION%
   - pip install %NENGO_VERSION%
