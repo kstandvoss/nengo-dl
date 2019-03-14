@@ -24,44 +24,44 @@ jobs:
   include:
   - stage: test
     env: MODE="static"
-  - env: MODE="docs"
-  - env: MODE="test"
-    cache: false  # disable the cache for one build to make sure that works
-  - env: MODE="coverage"
-         NENGO_VERSION="git+https://github.com/nengo/nengo.git"
-         TF_VERSION="tensorflow<2.0 --pre"
-  - env: MODE="coverage"
-         NENGO_VERSION="nengo==2.7.0"
-         TF_VERSION="tensorflow==1.4.0"
-         NUMPY_VERSION="numpy==1.12.1"
-         PYTHON_VERSION="3.4"
-         PIP_UPGRADE_STRATEGY="only-if-needed"
-  - env: TEST_ARGS="--dtype float64 --simulator-only"
-  - env: TEST_ARGS="--unroll_simulation 5 --simulator-only"
-  - env: TEST_ARGS="--inference-only --simulator-only"
-  - env: MODE="examples"
-    language: generic  # needed for xvfb
-  - stage: deploy
-    if: branch =~ ^release-candidate-* OR tag =~ ^v[0-9]*
-    env: MODE="deploy"
-    cache: false
-    deploy:
-      - provider: pypi
-        server: https://test.pypi.org/legacy/
-        user: drasmuss
-        password: $PYPI_TOKEN
-        distributions: "sdist"
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^release-candidate-*
-          condition: $TRAVIS_TAG = ""
-      - provider: pypi
-        user: drasmuss
-        password: $PYPI_TOKEN
-        distributions: "sdist"
-        on:
-          all_branches: true
-          condition: $TRAVIS_TAG =~ ^v[0-9]*
+#  - env: MODE="docs"
+#  - env: MODE="test"
+#    cache: false  # disable the cache for one build to make sure that works
+#  - env: MODE="coverage"
+#         NENGO_VERSION="git+https://github.com/nengo/nengo.git"
+#         TF_VERSION="tensorflow<2.0 --pre"
+#  - env: MODE="coverage"
+#         NENGO_VERSION="nengo==2.7.0"
+#         TF_VERSION="tensorflow==1.4.0"
+#         NUMPY_VERSION="numpy==1.12.1"
+#         PYTHON_VERSION="3.4"
+#         PIP_UPGRADE_STRATEGY="only-if-needed"
+#  - env: TEST_ARGS="--dtype float64 --simulator-only"
+#  - env: TEST_ARGS="--unroll_simulation 5 --simulator-only"
+#  - env: TEST_ARGS="--inference-only --simulator-only"
+#  - env: MODE="examples"
+#    language: generic  # needed for xvfb
+#  - stage: deploy
+#    if: branch =~ ^release-candidate-* OR tag =~ ^v[0-9]*
+#    env: MODE="deploy"
+#    cache: false
+#    deploy:
+#      - provider: pypi
+#        server: https://test.pypi.org/legacy/
+#        user: drasmuss
+#        password: $PYPI_TOKEN
+#        distributions: "sdist"
+#        on:
+#          all_branches: true
+#          condition: $TRAVIS_BRANCH =~ ^release-candidate-*
+#          condition: $TRAVIS_TAG = ""
+#      - provider: pypi
+#        user: drasmuss
+#        password: $PYPI_TOKEN
+#        distributions: "sdist"
+#        on:
+#          all_branches: true
+#          condition: $TRAVIS_TAG =~ ^v[0-9]*
 
 # set up miniconda
 before_install:
@@ -75,6 +75,8 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
+  - pip install git+https://github.com/nengo/nengo-bones.git@template-ci
+  - generate-ci-scripts --conf-file .ci/bones_conf.py --output-dir .ci
   - chmod +x .ci/*.sh
 
 # install python requirements
