@@ -68,7 +68,7 @@ before_install:
   - conda update -q conda
   - conda info -a
   - pip install git+https://github.com/nengo/nengo-bones.git@template-ci
-  - generate-bones ci-scripts --output-dir .ci
+  - generate-bones --output-dir .ci ci-scripts
   - chmod +x .ci/*.sh
 
 # install python requirements
