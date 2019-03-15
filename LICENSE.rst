@@ -66,5 +66,7 @@ To run the unit tests, NengoDL uses:
   `GPL license <https://github.com/PyCQA/pylint/blob/master/COPYING>`__
 * `pytest <https://docs.pytest.org/en/latest/>`_ - Used under
   `MIT license <https://docs.pytest.org/en/latest/license.html>`__
+* `pytest-cov <https://github.com/pytest-dev/pytest-cov>`_ - Used under
+  `MIT license <https://github.com/pytest-dev/pytest-cov/blob/master/LICENSE>`__
 * `pytest-xdist <https://github.com/pytest-dev/pytest-xdist>`_ - Used under
   `MIT license <https://github.com/pytest-dev/pytest-xdist/blob/master/LICENSE>`__

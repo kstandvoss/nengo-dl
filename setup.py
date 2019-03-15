@@ -73,6 +73,7 @@ tests_require = [
     "nbval>=0.6.0",
     "pylint>=1.9.2",
     "pytest>=3.6.0,<4.1.0",  # >=4.1.0 doesn't work with nengo tests TODO: remove this once https://github.com/nengo/nengo/pull/1497 is merged
+    "pytest-cov>=2.6.0",
     "pytest-xdist>=1.16.0",
 ]
 
