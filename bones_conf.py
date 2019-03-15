@@ -1,5 +1,6 @@
 pkg_name = "nengo_dl"
 repo_name = "nengo/nengo-dl"
+pypi_user = "drasmuss"
 
 # ci script config
 script_config = {
@@ -27,7 +28,7 @@ global_vars = {
     "NENGO_VERSION": "nengo",
 }
 jobs = [
-    {"script": "static", "stage": "test"},
+    {"script": "static"},
     {"script": "docs"},
     {"script": "test", "cache": "false"},
     {"script": "test", "coverage": True,
