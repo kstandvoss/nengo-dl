@@ -1,6 +1,5 @@
 pkg_name = "nengo_dl"
 repo_name = "nengo/nengo-dl"
-pypi_user = "drasmuss"
 
 # ci script config
 script_config = {
@@ -43,5 +42,8 @@ jobs = [
     {"script": "test", "test_args": "--unroll_simulation 5 --simulator-only"},
     {"script": "test", "test_args": "--inference-only --simulator-only"},
     {"script": "examples", "language": "generic"},
-    # TODO: deploy
 ]
+
+# deployment config
+pypi_user = "drasmuss"
+deploy_dists = ["sdist"]

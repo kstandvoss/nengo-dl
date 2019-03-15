@@ -24,7 +24,6 @@ jobs:
   include:
   - env:
       SCRIPT="static"
-    stage: test
   - env:
       SCRIPT="docs"
   - env:
@@ -54,6 +53,27 @@ jobs:
   - env:
       SCRIPT="examples"
     language: generic
+  - stage: deploy
+    if: branch =~ ^release-candidate-* OR tag =~ ^v[0-9]*
+    env: SCRIPT="deploy"
+    cache: false
+    deploy:
+      - provider: pypi
+        server: https://test.pypi.org/legacy/
+        user: drasmuss
+        password: $PYPI_TOKEN
+        distributions: "sdist "
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^release-candidate-*
+          condition: $TRAVIS_TAG = ""
+      - provider: pypi
+        user: drasmuss
+        password: $PYPI_TOKEN
+        distributions: "sdist "
+        on:
+          all_branches: true
+          condition: $TRAVIS_TAG =~ ^v[0-9]*
 
 # set up miniconda
 before_install:
